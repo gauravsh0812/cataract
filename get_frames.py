@@ -2,13 +2,23 @@ import os
 import math
 import pandas as pd
 
+def seconds_to_hms(seconds):
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = seconds % 60
+    return f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}"
+
 def extract(root, case, start, end, category):
+    # Convert start and end times to HH:MM:SS format
+    start_hms = seconds_to_hms(start)
+    end_hms = seconds_to_hms(end)
+    
     # Ensure the frames directory exists
     frames_dir = f"{root}/frames/{case}"
     os.makedirs(frames_dir, exist_ok=True)
 
     # Create the ffmpeg command
-    cmd = f'ffmpeg -ss 00:{start}:00 -to 00:{end}:00 -i {root}/videos/{case}.mp4 -vf "fps=1" {frames_dir}/frame_%04d.jpg'
+    cmd = f'ffmpeg -ss {start_hms} -to {end_hms} -i {root}/videos/{case}.mp4 -vf "fps=1" {frames_dir}/frame_%04d.jpg'
     
     # Execute the command
     os.system(cmd)
@@ -33,7 +43,7 @@ if __name__ == "__main__":
         f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
         for _, row in f.iterrows():
             start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
-            category = row["comment"]
+            category = row["comments"]
             extracted_frames = extract(root, c, start, end, category)
             
             # Append extracted frames and their categories to the DataFrame
