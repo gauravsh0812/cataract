@@ -15,7 +15,7 @@ from dataset.preprocessing import preprocess
 from src.models.clipmodel import Cataract_Model
 from src.utils import *
 from src.training import train
-from src.testing import test
+from src.testing import evaluate
 
 with open("config/config.yaml") as f:
     cfg = Box(yaml.safe_load(f))

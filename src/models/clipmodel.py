@@ -60,7 +60,7 @@ class Cataract_Model(nn.Module):
 
     def __init__(self, num_classes):
 
-        super(Cataract_Model, self).__init__()
+        super(Cataract_Model    , self).__init__()
         self.clipenc = ClipVisionEncoder()
         
         self.projector = Projector(num_classes)
