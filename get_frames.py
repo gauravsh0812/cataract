@@ -46,7 +46,7 @@ if __name__ == "__main__":
     imgs = []
     phases = []
     for case in os.listdir(f"{root}/frames"):
-        for img in os.listdir(case):
+        for img in os.listdir(f"{root}/frames/{case}"):
             imgs.append(f"{root}/frames/{case}/{img}")
 
             # timing of the frame
