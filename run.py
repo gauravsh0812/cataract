@@ -3,7 +3,6 @@ import yaml
 import random
 import time
 import math
-import wandb
 import numpy as np
 import multiprocessing as mp
 from box import Box
@@ -44,12 +43,6 @@ def epoch_time(start_time, end_time):
     return elapsed_mins, elapsed_secs
 
 def train_model(rank=None):
-
-    if (cfg.general.wandb):
-        if (not cfg.general.ddp) or (cfg.general.ddp and rank == 0): 
-            # initiate the wandb    
-            wandb.init()
-            wandb.config.update(cfg)
 
     # set_random_seed
     set_random_seed(cfg.general.seed)
@@ -135,10 +128,6 @@ def train_model(rank=None):
         scheduler = None
 
     best_valid_loss = float("inf")
-    
-    if (cfg.general.wandb):
-        if (not cfg.general.ddp) or (cfg.general.ddp and rank == 0): 
-            wandb.watch(model)
 
     if not cfg.general.load_trained_model_for_testing:
         count_es = 0
@@ -171,11 +160,6 @@ def train_model(rank=None):
                 if cfg.training.scheduler.isScheduler:
                     scheduler.step()
 
-                if (cfg.general.wandb):
-                    if (not cfg.general.ddp) or (cfg.general.ddp and rank == 0): 
-                        wandb.log({"train_loss": train_loss})
-                        wandb.log({"val_loss": val_loss})
-
                 end_time = time.time()
                 # total time spent on training an epoch
                 
@@ -194,11 +178,8 @@ def train_model(rank=None):
                     if (not cfg.general.ddp) or (cfg.general.ddp and rank == 0):
                         torch.save(
                             model.state_dict(),
-                            f"trained_models/clip_roberta_adaptor_best_model.pt",
+                            f"trained_models/{cfg.model_name}.pt",
                         )
-
-                        if (cfg.general.wandb):
-                            wandb.save(f"trained_models/clip_roberta_adaptor_best_model.pt")
                 else:
                     count_es += 1
 
@@ -242,12 +223,12 @@ def train_model(rank=None):
 
     print(
         "loading best saved model: ",
-        f"trained_models/clip_roberta_adaptor_best_model.pt",
+        f"trained_models/{cfg.model_name}.pt",
     )
     # loading pre_tained_model
     model.load_state_dict(
         torch.load(
-            f"trained_models/clip_roberta_adaptor_best_model.pt"
+            f"trained_models/{cfg.model_name}.pt"
         )
     )
 
