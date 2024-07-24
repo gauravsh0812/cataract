@@ -32,7 +32,8 @@ def extract(root, case, start, end, category):
     extracted_frames = []
     for frame in frames:
         frame_path = os.path.join(frames_dir, frame)
-        extracted_frames.append({"frame_path": frame_path, "phase": category})
+        extracted_frames.append({"start": start_hms, "end": end_hms,
+                                 "frame_path": frame_path, "phase": category})
     
     return extracted_frames
 
