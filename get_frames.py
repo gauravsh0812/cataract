@@ -61,7 +61,8 @@ if __name__ == "__main__":
         8:"Lens Implantation",
         9:"Lens positioning",
         10:"Viscoelastic_Suction",
-        11:"Tonifying/Antibiotics"
+        11:"Tonifying/Antibiotics",
+        "12": "Anterior_Chamber Flushing"
     }
 
     for c in cases:
@@ -70,6 +71,7 @@ if __name__ == "__main__":
             for _, row in f.iterrows():
                 start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
                 phase = row["comment"]
+                
                 if phase not in phase_dict.values():
                     phase_dict = add_value_to_dict(phase_dict, phase)
                     
@@ -81,28 +83,21 @@ if __name__ == "__main__":
     with open(file_path, 'w') as file:
         json.dump(phase_dict, file, indent=4)
         
-    # imgs = []
-    # phases = []
-    # for case in tqdm.tqdm(os.listdir(f"{root}/frames")):
-    #     f = pd.read_csv(f"{root}/annotations/{case}/{case}_annotations_phases.csv")
-    #     for img in os.listdir(f"{root}/frames/{case}"):
-    #         imgs.append(f"{root}/frames/{case}/{img}")
-            
-    #         # timing of the frame
-    #         _, _, ss, tt = img.split(".")[0].split("_")
-    #         print(ss,tt)
-    #         for _,i in f.iterrows():
-    #             start, end = math.ceil(i["sec"]), math.ceil(i["endSec"])
-    #             print(start, end)
-    #             if ss == start and tt == end:
-    #                 phases.append(i["comment"])
-    #                 break
+    imgs = []
+    phases = []
+    for case in tqdm.tqdm(os.listdir(f"{root}/frames")):
+        for img in os.listdir(f"{root}/frames/{case}"):
+            imgs.append(f"{root}/frames/{case}/{img}")
 
-    # # Convert list of dictionaries to DataFrame
-    # df = pd.DataFrame({
-    #     "images":imgs,
-    #     "phases":phases
-    # }, columns=["images","phases"])
+            # phase
+            phs = img.split(".")[0].split("_")[-1]
+            phases.append(phs)
+            
+    # Convert list of dictionaries to DataFrame
+    df = pd.DataFrame({
+        "images":imgs,
+        "phases":phases
+    }, columns=["images","phases"])
     
-    # # Save the DataFrame to a CSV file if needed
-    # df.to_csv(f"{root}/extracted_frames_with_phases.csv", index=False)
+    # Save the DataFrame to a CSV file if needed
+    df.to_csv(f"{root}/extracted_frames_with_phases.csv", index=False)
