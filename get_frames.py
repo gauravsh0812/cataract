@@ -20,6 +20,11 @@ def extract_frames(root, case, start, end, category):
     frames_dir = f"{root}/frames/{case}"
     os.makedirs(frames_dir, exist_ok=True)
 
+    if category == "Tonifying/Antibiotics":
+        category = "TA"
+    if category == "Lens":
+        category = "Lens"
+    
     # Create the ffmpeg command
     cmd = f"ffmpeg -ss {start_hms} -to {end_hms} \
             -i {root}/videos/{case}.mp4 \
