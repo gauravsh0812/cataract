@@ -13,8 +13,10 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP
 from dataset.preprocessing import preprocess
-
-from utils import *
+from src.models.clipmodel import Cataract_Model
+from src.utils import *
+from src.training import train
+from src.testing import test
 
 with open("config/config.yaml") as f:
     cfg = Box(yaml.safe_load(f))
@@ -40,54 +42,6 @@ def epoch_time(start_time, end_time):
     elapsed_mins = int(elapsed_time / 60)
     elapsed_secs = int(elapsed_time - (elapsed_mins * 60))
     return elapsed_mins, elapsed_secs
-
-def define_model(max_len, ans_vocab):
-    
-    CLIPENC = ClipVisionEncoder(finetune=cfg.training.clip.finetune,
-                            config=cfg.training.clip.configuration)
-    ROBENC = RobertaEncoder()    
-
-    if cfg.training.clip.finetune:
-        in_dim = cfg.training.clip.configuration.hidden_size
-    else:
-        in_dim = 768
-    CLIPADA = ClipAdaptor(in_dim, 
-                  cfg.training.adaptor.features,
-                  max_len,
-                  )
-    
-    ROBADA = RobertaAdaptor(
-        cfg.training.roberta.in_dim,
-        cfg.training.adaptor.features,
-    )
-    
-    PROJ = Projector(
-        cfg.training.adaptor.features,
-        max_len, 
-        cfg.training.general.num_classes,
-    )
-
-    LSTMDEC = BiLSTM(
-        cfg.training.bilstm.in_dim,
-        cfg.training.bilstm.hidden_dim,
-        len(ans_vocab),
-    )
-
-    # freezing the pre-trained models
-    # only training the adaptor layer
-    for param in CLIPENC.parameters():
-        param.requires_grad = cfg.training.clip.finetune
-
-    for param in ROBENC.parameters():
-        param.requires_grad = cfg.training.roberta.finetune 
-
-    model = Endoscopic_model(CLIPENC, 
-                            ROBENC,
-                            CLIPADA,
-                            ROBADA,
-                            PROJ,
-                            LSTMDEC,)
-    return model
 
 def train_model(rank=None):
 
@@ -119,11 +73,9 @@ def train_model(rank=None):
                 train_dataloader,
                 test_dataloader,
                 val_dataloader,
-                qtn_tokenizer,
-                ans_vocab,
-                max_len,
-            ) = data_loaders(cfg.training.general.batch_size)
-            model = define_model(max_len, ans_vocab).to(device)
+                num_classes
+            ) = preprocess(cfg.training.general.batch_size)
+            model = Cataract_Model(num_classes).to(device)
 
         elif cfg.general.ddp:
             # create default process group
@@ -133,10 +85,9 @@ def train_model(rank=None):
                 train_dataloader,
                 test_dataloader,
                 val_dataloader,
-                qtn_tokenizer, ans_vocab,
-                max_len,
-            ) = data_loaders(cfg.training.general.batch_size)
-            model = define_model(max_len,ans_vocab)
+                num_classes
+            ) = preprocess(cfg.training.general.batch_size)
+            model = Cataract_Model(num_classes)
             model = DDP(
                 model.to(f"cuda:{rank}"),
                 device_ids=[rank],
@@ -153,16 +104,15 @@ def train_model(rank=None):
             train_dataloader,
             test_dataloader,
             val_dataloader,
-            qtn_tokenizer, ans_vocab,
-            max_len,
-        ) = data_loaders()
-        model = define_model(max_len,ans_vocab).to(device)
+            num_classes
+        ) = preprocess(cfg.training.general.batch_size)
+        model = Cataract_Model(num_classes).to(device)
 
     print("MODEL: ")
     print(f"The model has {count_parameters(model)} trainable parameters")
 
     # intializing loss function
-    criterion = torch.nn.CrossEntropyLoss(ignore_index=ans_vocab["<pad>"])
+    criterion = torch.nn.CrossEntropyLoss()
 
     # optimizer
     optimizer = torch.optim.AdamW(
@@ -206,6 +156,7 @@ def train_model(rank=None):
                     device,
                     use_ddp=cfg.general.ddp,
                     rank=rank,
+                    load_tensors = cfg.dataset.load_image_tensors,
                 )
 
                 val_loss = evaluate(

@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import Dataset, DataLoader, DistributedSampler
 from torch.utils.data import SequentialSampler
 from box import Box
-from transformers import RobertaTokenizer
 import torch.multiprocessing as mp
 
 mp.set_start_method('spawn', force=True)
@@ -61,6 +60,9 @@ def data_loaders(batch_size):
     print("training dataset size: ", len(train_df))
     print("testing dataset size: ", len(test_df))
     print("validation dataset size: ", len(val_df))
+    
+    num_classes = len(set(train_df["phases"].tolist()))
+    print("num_classes: ", num_classes)
 
     # initailizing class Img2MML_dataset: train dataloader
     imml_train = Img2MML_dataset(train_df)
@@ -128,4 +130,4 @@ def data_loaders(batch_size):
 
     return (train_dataloader, 
             test_dataloader, 
-            val_dataloader, )
+            val_dataloader, num_classes)

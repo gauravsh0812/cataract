@@ -1,4 +1,4 @@
-model_name: resnet_clip_adaptor
+model_name: clip_adaptor
 
 general:
   seed: 42
