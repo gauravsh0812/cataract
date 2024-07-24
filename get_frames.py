@@ -15,6 +15,14 @@ def get_key_by_value(dictionary, target_value):
             return key
     raise ValueError(f"Value {target_value} not found in dictionary")
 
+def add_value_to_dict(dictionary, new_value):
+    # Find the next available integer key
+    next_key = max(dictionary.keys()) + 1
+
+    # Add the new value to the dictionary
+    dictionary[next_key] = new_value
+    return dictionary
+
 def extract_frames(root, case, start, end, phase_dict, phase):
     # Convert start and end times to HH:MM:SS format
     start_hms = seconds_to_hms(start)
@@ -62,6 +70,9 @@ if __name__ == "__main__":
             for _, row in f.iterrows():
                 start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
                 phase = row["comment"]
+                if phase not in phase_dict.values():
+                    phase_dict = add_value_to_dict(phase_dict, phase)
+                    
                 extract_frames(root, c, start, end, phase_dict, phase)
 
     # imgs = []
