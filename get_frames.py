@@ -20,8 +20,7 @@ def extract(root, case, start, end, category):
     os.makedirs(frames_dir, exist_ok=True)
 
     # Create the ffmpeg command
-    cmd = f'ffmpeg -ss {start_hms} -to {end_hms} -i {root}/videos/{case}.mp4 -v \
-            "fps=1" {frames_dir}/frame_%04d_{start_hms}_{end_hms}.jpg'
+    cmd = f'ffmpeg -ss {start_hms} -to {end_hms} -i {root}/videos/{case}.mp4 -v "fps=1" {frames_dir}/frame_%04d_{start_hms}_{end_hms}.jpg'
     
     # Execute the command
     os.system(cmd)
