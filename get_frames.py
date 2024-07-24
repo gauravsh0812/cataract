@@ -30,14 +30,14 @@ def extract(root, case, start, end, category):
     extracted_frames = []
     for frame in frames:
         frame_path = os.path.join(frames_dir, frame)
-        extracted_frames.append((frame_path, category))
+        extracted_frames.append({"frame_path": frame_path, "phase": category})
     
     return extracted_frames
 
 if __name__ == "__main__":
     root = "/data/shared/cataract-1K/phase_recognition"
     cases = os.listdir(f"{root}/annotations")
-    df = pd.DataFrame(columns=["frame_path", "phase"])
+    all_frames = []
     
     for c in cases:
         f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
@@ -45,10 +45,10 @@ if __name__ == "__main__":
             start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
             category = row["comment"]
             extracted_frames = extract(root, c, start, end, category)
-            
-            # Append extracted frames and their categories to the DataFrame
-            for frame_path, phase in extracted_frames:
-                df = df.append({"frame_path": frame_path, "phase": phase}, ignore_index=True)
+            all_frames.extend(extracted_frames)
+    
+    # Convert list of dictionaries to DataFrame
+    df = pd.DataFrame(all_frames)
     
     # Save the DataFrame to a CSV file if needed
     df.to_csv(f"{root}/extracted_frames_with_phases.csv", index=False)
