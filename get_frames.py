@@ -91,6 +91,7 @@ if __name__ == "__main__":
 
             # phase
             phs = img.split(".")[0].split("_")[-1]
+            print("phs: ", phs)
             assert phs in phase_dict.keys()
             phases.append(phs)
             
