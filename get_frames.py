@@ -1,5 +1,6 @@
 import os
 import math
+import json
 import pandas as pd
 import tqdm
 
@@ -63,7 +64,6 @@ if __name__ == "__main__":
         11:"Tonifying/Antibiotics"
     }
 
-    
     for c in cases:
         if c != "SYNAPSE_METADATA_MANIFEST.tsv":
             f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
@@ -74,7 +74,13 @@ if __name__ == "__main__":
                     phase_dict = add_value_to_dict(phase_dict, phase)
                     
                 extract_frames(root, c, start, end, phase_dict, phase)
-
+    
+    
+    # Save the dictionary to a JSON file
+    file_path = f'{root}/phase_dict.json'
+    with open(file_path, 'w') as file:
+        json.dump(phase_dict, file, indent=4)
+        
     # imgs = []
     # phases = []
     # for case in tqdm.tqdm(os.listdir(f"{root}/frames")):
