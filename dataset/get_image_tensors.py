@@ -34,11 +34,11 @@ os.makedirs(tensor_dir, exist_ok=True)
 for case in tqdm.tqdm(os.listdir(image_dir)):
     os.makedirs(f"{tensor_dir}/{case}", exist_ok=True)
     for image_name in os.listdir(f"{image_dir}/{case}"):
-        image_path = os.path.join(image_dir, image_name)
+        image_path = os.path.join(image_dir, f"{case}/{image_name}")
         tensor = load_and_preprocess_image(image_path)
         
         # Save tensor with the same name as the image but with .pt extension
-        tensor_path = os.path.join(tensor_dir, f'{os.path.splitext(image_name)[0]}.pt')
+        tensor_path = os.path.join(f"{tensor_dir}/{case}", f'{os.path.splitext(image_name)[0]}.pt')
         save_tensor(tensor, tensor_path)
 
 print("Preprocessing and saving tensors completed.")
