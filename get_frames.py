@@ -30,7 +30,7 @@ def extract_frames(root, case, start, end, category):
     
 if __name__ == "__main__":
     root = "/data/shared/cataract-1K/phase_recognition"
-    cases = os.listdir(f"{root}/annotations")[:10]
+    cases = os.listdir(f"{root}/annotations")[:3]
 
     tmp = dict()
     
@@ -55,6 +55,7 @@ if __name__ == "__main__":
 
             # get the phase
             for l in tmp[case]:
+                print(l)
                 s, t, ctgry = l
                 if s == ss and t == tt:
                     phases.append(ctgry)
