@@ -25,7 +25,7 @@ class Img2MML_dataset(Dataset):
         lbl = self.dataframe.iloc[index,-1]
         return img,lbl
 
-def data_loaders(batch_size):
+def preprocess(batch_size):
 
     print("creating dataloaders...")
     
