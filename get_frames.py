@@ -38,7 +38,7 @@ def extract_frames(root, case, start, end, phase_dict, phase):
     
 if __name__ == "__main__":
     root = "/data/shared/cataract-1K/phase_recognition"
-    cases = os.listdir(f"{root}/annotations")[:3]
+    cases = os.listdir(f"{root}/annotations")
 
     phase_dict = {
         0:"Incision",
