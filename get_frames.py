@@ -32,13 +32,13 @@ if __name__ == "__main__":
     root = "/data/shared/cataract-1K/phase_recognition"
     cases = os.listdir(f"{root}/annotations")[:3]
     
-    for c in cases:
-        if c != "SYNAPSE_METADATA_MANIFEST.tsv":
-            f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
-            for _, row in f.iterrows():
-                start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
-                category = row["comment"]
-                extract_frames(root, c, start, end, category)
+    # for c in cases:
+    #     if c != "SYNAPSE_METADATA_MANIFEST.tsv":
+    #         f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
+    #         for _, row in f.iterrows():
+    #             start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
+    #             category = row["comment"]
+    #             extract_frames(root, c, start, end, category)
 
     imgs = []
     phases = []
@@ -49,15 +49,14 @@ if __name__ == "__main__":
             
             # timing of the frame
             _, _, ss, tt = img.split(".")[0].split("_")
-            
+            print(ss,tt)
             for _,i in f.iterrows():
                 start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
+                print(start, end)
                 if ss == start and tt == end:
                     phases.append(i["comment"])
                     break
 
-    print(imgs)
-    print(phases)
     # Convert list of dictionaries to DataFrame
     df = pd.DataFrame({
         "images":imgs,
