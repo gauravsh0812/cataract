@@ -43,7 +43,7 @@ if __name__ == "__main__":
     imgs = []
     phases = []
     for case in tqdm.tqdm(os.listdir(f"{root}/frames")):
-        f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
+        f = pd.read_csv(f"{root}/annotations/{case}/{case}_annotations_phases.csv")
         for img in os.listdir(f"{root}/frames/{case}"):
             imgs.append(f"{root}/frames/{case}/{img}")
             
