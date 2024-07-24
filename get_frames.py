@@ -62,7 +62,7 @@ if __name__ == "__main__":
         9:"Lens positioning",
         10:"Viscoelastic_Suction",
         11:"Tonifying/Antibiotics",
-        12: "Anterior_Chamber Flushing"
+        12:"Anterior_Chamber Flushing"
     }
 
     # for c in cases:
@@ -91,9 +91,6 @@ if __name__ == "__main__":
 
             # phase
             phs = img.split(".")[0].split("_")[-1]
-            print("phs: ", phs)
-            print(phase_dict.keys())
-            assert str(phs) in phase_dict.keys()
             phases.append(phs)
             
     # Convert list of dictionaries to DataFrame
