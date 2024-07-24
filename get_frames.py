@@ -45,8 +45,7 @@ if __name__ == "__main__":
     # all_frames = []
     
     for c in cases:
-        # if c != "SYNAPSE_METADATA_MANIFEST.tsv":
-        if c=="case_4687":
+        if c != "SYNAPSE_METADATA_MANIFEST.tsv":
             f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
             for _, row in f.iterrows():
                 start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
