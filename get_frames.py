@@ -1,6 +1,7 @@
 import os
 import math
 import pandas as pd
+import tqdm
 
 def seconds_to_hms(seconds):
     hours = seconds // 3600
@@ -45,7 +46,7 @@ if __name__ == "__main__":
 
     imgs = []
     phases = []
-    for case in os.listdir(f"{root}/frames"):
+    for case in tqdm.tqdm(os.listdir(f"{root}/frames")):
         for img in os.listdir(f"{root}/frames/{case}"):
             imgs.append(f"{root}/frames/{case}/{img}")
 
