@@ -40,12 +40,13 @@ if __name__ == "__main__":
     all_frames = []
     
     for c in cases:
-        f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
-        for _, row in f.iterrows():
-            start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
-            category = row["comment"]
-            extracted_frames = extract(root, c, start, end, category)
-            all_frames.extend(extracted_frames)
+        if c != "SYNAPSE_METADATA_MANIFEST.tsv":
+            f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
+            for _, row in f.iterrows():
+                start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
+                category = row["comment"]
+                extracted_frames = extract(root, c, start, end, category)
+                all_frames.extend(extracted_frames)
     
     # Convert list of dictionaries to DataFrame
     df = pd.DataFrame(all_frames)
