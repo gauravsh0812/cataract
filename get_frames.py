@@ -51,7 +51,7 @@ if __name__ == "__main__":
             _, _, ss, tt = img.split(".")[0].split("_")
             print(ss,tt)
             for _,i in f.iterrows():
-                start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
+                start, end = math.ceil(i["sec"]), math.ceil(i["endSec"])
                 print(start, end)
                 if ss == start and tt == end:
                     phases.append(i["comment"])
