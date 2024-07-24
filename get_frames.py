@@ -65,4 +65,4 @@ if __name__ == "__main__":
     }, columns=["images","phases"])
     
     # Save the DataFrame to a CSV file if needed
-    # df.to_csv(f"{root}/extracted_frames_with_phases.csv", index=False)
+    df.to_csv(f"{root}/extracted_frames_with_phases.csv", index=False)
