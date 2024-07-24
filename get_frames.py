@@ -55,7 +55,9 @@ if __name__ == "__main__":
                 if ss == start and tt == end:
                     phases.append(i["comment"])
                     break
-            
+
+    print(imgs)
+    print(phases)
     # Convert list of dictionaries to DataFrame
     df = pd.DataFrame({
         "images":imgs,
