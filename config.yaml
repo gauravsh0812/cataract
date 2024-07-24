@@ -2,10 +2,9 @@ model_name: clip_adaptor
 
 general:
   seed: 42
-  wandb: False
-  ddp: True
+  ddp: False
   ncpus: 8
-  gpus: 0,1,2,3
+  gpus: 0
   world_size: 4
   rank: 0
   device: "cuda"
