@@ -9,23 +9,24 @@ def seconds_to_hms(seconds):
     seconds = seconds % 60
     return f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}"
 
-def extract_frames(root, case, start, end, category):
+def get_key_by_value(dictionary, target_value):
+    for key, value in dictionary.items():
+        if value == target_value:
+            return key
+    raise ValueError(f"Value {target_value} not found in dictionary")
+
+def extract_frames(root, case, start, end, phase_dict, phase):
     # Convert start and end times to HH:MM:SS format
     start_hms = seconds_to_hms(start)
     end_hms = seconds_to_hms(end)
 
-    print("start, end: ", start_hms, end_hms, category)
+    print("start, end: ", start_hms, end_hms, phase)
     
     # Ensure the frames directory exists
     frames_dir = f"{root}/frames/{case}"
     os.makedirs(frames_dir, exist_ok=True)
 
-    if category == "Tonifying/Antibiotics":
-        category = "TA"
-    if category == "Lens Implantation":
-        category = "LI"
-    if category == "Lens positioning":
-        category = "LP"
+    category = get_key_by_value(phase_dict, phase)
     
     # Create the ffmpeg command
     cmd = f"ffmpeg -ss {start_hms} -to {end_hms} \
@@ -38,14 +39,30 @@ def extract_frames(root, case, start, end, category):
 if __name__ == "__main__":
     root = "/data/shared/cataract-1K/phase_recognition"
     cases = os.listdir(f"{root}/annotations")[:3]
+
+    phase_dict = {
+        0:"Incision",
+        1:"Viscoelastic",
+        2:"Capsulorhexis",
+        3:"Hydrodissection",
+        4:"Phacoemulsification",
+        5:"Irrigation/Aspiration",
+        6:"Capsule Pulishing",
+        7:"Viscoelastic",
+        8:"Lens Implantation",
+        9:"Lens positioning",
+        10:"Viscoelastic_Suction",
+        11:"Tonifying/Antibiotics"
+    }
+
     
     for c in cases:
         if c != "SYNAPSE_METADATA_MANIFEST.tsv":
             f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
             for _, row in f.iterrows():
                 start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
-                category = row["comment"]
-                extract_frames(root, c, start, end, category)
+                phase = row["comment"]
+                extract_frames(root, c, start, end, phase_dict, phase)
 
     # imgs = []
     # phases = []
