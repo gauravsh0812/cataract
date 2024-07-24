@@ -12,6 +12,8 @@ def extract(root, case, start, end, category):
     # Convert start and end times to HH:MM:SS format
     start_hms = seconds_to_hms(start)
     end_hms = seconds_to_hms(end)
+
+    print("start, end: ", start_hms, end_hms)
     
     # Ensure the frames directory exists
     frames_dir = f"{root}/frames/{case}"
