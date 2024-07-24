@@ -54,8 +54,8 @@ if __name__ == "__main__":
             _, _, ss, tt = img.split(".")[0].split("_")
 
             # get the phase
+            print(tmp[case])
             for l in tmp[case]:
-                print(l)
                 s, t, ctgry = l
                 if s == ss and t == tt:
                     phases.append(ctgry)
