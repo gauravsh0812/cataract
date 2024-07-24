@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 
 root = "/data/shared/cataract-1K/phase_recognition"
 cases = os.listdir(f"{root}/annotations")
