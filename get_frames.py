@@ -22,8 +22,10 @@ def extract_frames(root, case, start, end, category):
 
     if category == "Tonifying/Antibiotics":
         category = "TA"
-    if category == "Lens":
-        category = "Lens"
+    if category == "Lens Implantation":
+        category = "LI"
+    if category == "Lens positioning":
+        category = "LP"
     
     # Create the ffmpeg command
     cmd = f"ffmpeg -ss {start_hms} -to {end_hms} \
