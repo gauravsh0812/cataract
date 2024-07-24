@@ -31,12 +31,14 @@ tensor_dir = f"{cfg.dataset.path_to_data}/frame_tensors"
 os.makedirs(tensor_dir, exist_ok=True)
 
 # Process each image in the directory
-for image_name in tqdm.tqdm(os.listdir(image_dir)):
-    image_path = os.path.join(image_dir, image_name)
-    tensor = load_and_preprocess_image(image_path)
-    
-    # Save tensor with the same name as the image but with .pt extension
-    tensor_path = os.path.join(tensor_dir, f'{os.path.splitext(image_name)[0]}.pt')
-    save_tensor(tensor, tensor_path)
+for case in tqdm.tqdm(os.listdir(image_dir)):
+    os.makedirs(f"{tensor_dir}/{case}", exist_ok=True)
+    for image_name in os.listdir(f"{image_dir}/{case}"):
+        image_path = os.path.join(image_dir, image_name)
+        tensor = load_and_preprocess_image(image_path)
+        
+        # Save tensor with the same name as the image but with .pt extension
+        tensor_path = os.path.join(tensor_dir, f'{os.path.splitext(image_name)[0]}.pt')
+        save_tensor(tensor, tensor_path)
 
 print("Preprocessing and saving tensors completed.")
