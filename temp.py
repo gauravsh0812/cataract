@@ -10,5 +10,6 @@ for c in cases:
     if c != "SYNAPSE_METADATA_MANIFEST.tsv":
         f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
         for _, row in f.iterrows():
-            cn+=1
+            start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
+            cn+=(end - start)
 print(cn)
