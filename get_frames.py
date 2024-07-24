@@ -65,23 +65,23 @@ if __name__ == "__main__":
         12:"Anterior_Chamber Flushing"
     }
 
-    # for c in cases:
-    #     if c != "SYNAPSE_METADATA_MANIFEST.tsv":
-    #         f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
-    #         for _, row in f.iterrows():
-    #             start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
-    #             phase = row["comment"]
+    for c in cases:
+        if c != "SYNAPSE_METADATA_MANIFEST.tsv":
+            f = pd.read_csv(f"{root}/annotations/{c}/{c}_annotations_phases.csv")
+            for _, row in f.iterrows():
+                start, end = math.ceil(row["sec"]), math.ceil(row["endSec"])
+                phase = row["comment"]
                 
-    #             if phase not in phase_dict.values():
-    #                 phase_dict = add_value_to_dict(phase_dict, phase)
+                if phase not in phase_dict.values():
+                    phase_dict = add_value_to_dict(phase_dict, phase)
                     
-    #             extract_frames(root, c, start, end, phase_dict, phase)
+                extract_frames(root, c, start, end, phase_dict, phase)
     
     
-    # # Save the dictionary to a JSON file
-    # file_path = f'{root}/phase_dict.json'
-    # with open(file_path, 'w') as file:
-    #     json.dump(phase_dict, file, indent=4)
+    # Save the dictionary to a JSON file
+    file_path = f'{root}/phase_dict.json'
+    with open(file_path, 'w') as file:
+        json.dump(phase_dict, file, indent=4)
         
     imgs = []
     phases = []
