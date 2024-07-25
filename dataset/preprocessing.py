@@ -53,9 +53,9 @@ def preprocess(batch_size):
     
     N = int(cfg.dataset.sample_size)
     if N != -1:
-        train = train[:N]
-        test = test[:int(N*0.1)]
-        val = val[:int(N*0.1)]
+        train_df = train_df[:N]
+        test_df = test_df[:int(N*0.1)]
+        val_df = val_df[:int(N*0.1)]
 
     print("training dataset size: ", len(train_df))
     print("testing dataset size: ", len(test_df))
