@@ -16,7 +16,7 @@ dataset:
   shuffle: True
   load_image_tensors: False
   vocab_freq: 5
-  sample_size: 1000
+  sample_size: -1
   num_workers: 0
   pin_memory: False
   num_classes: 13
