@@ -14,7 +14,7 @@ with open("config.yaml") as f:
     cfg = Box(yaml.safe_load(f))
 
 class Img2MML_dataset(Dataset):
-    def __init__(self, dataframe, ans_vocab):
+    def __init__(self, dataframe):
         self.dataframe = dataframe
 
     def __len__(self):
