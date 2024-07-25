@@ -61,9 +61,7 @@ def preprocess(batch_size):
     print("testing dataset size: ", len(test_df))
     print("validation dataset size: ", len(val_df))
     
-    num_classes = len(set(train_df["phases"].tolist()))
-    print("classes: ", set(train_df["phases"].tolist()))
-    print("num_classes: ", num_classes)
+    num_classes = cfg.dataset.num_classes
 
     # initailizing class Img2MML_dataset: train dataloader
     imml_train = Img2MML_dataset(train_df)

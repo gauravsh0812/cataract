@@ -19,6 +19,7 @@ dataset:
   sample_size: 40000
   num_workers: 0
   pin_memory: False
+  num_classes: 13
   
 training:
   general:
