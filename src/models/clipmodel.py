@@ -47,7 +47,9 @@ class Projector(nn.Module):
     def forward(self, x):
         x = self.gelu(self.norm(self.final_lin1(x)))  
         x = self.gelu(self.norm(self.final_lin2(x)))  # (B, 50, 64)
+        print(x.shape)
         x = self.pool(x)    # (B, 1, 64)       
+        print(x.shape)
         x = torch.flatten(x, -2,-1)   # (B, 64)
         print(x.shape)
         x = self.gelu(self.final_lin3(x))   # (B, num_classes)
