@@ -40,13 +40,8 @@ def train(
             imgs,
             device,
         )    # (B, num_classes)
-
-        print("lbls shape: ", lbls.shape)
-        print("output shape: ", output.shape)
-
-        exit()
-        loss = criterion(output.contiguous().view(-1, output.shape[-1]), 
-                         lbls.contiguous().view(-1))
+        
+        loss = criterion(output.contiguous().view(-1, output.shape[-1]), lbls)
         
         loss.backward()
 
