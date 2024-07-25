@@ -40,9 +40,7 @@ class Projector(nn.Module):
         self.final_lin1 = nn.Linear(768, 512)
         self.final_lin2 = nn.Linear(512, 64)
         self.final_lin3 = nn.Linear(64, num_classes)
-        self.norm1 = nn.BatchNorm1d(50)
-        self.norm2 = nn.BatchNorm1d(50)
-
+        self.norm = nn.BatchNorm1d(50)
         self.pool = nn.AdaptiveAvgPool1d(1)
         self.gelu = nn.GELU()
 
