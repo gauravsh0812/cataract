@@ -139,6 +139,7 @@ def train_model(rank=None):
                 train_loss = train(
                     model,
                     train_dataloader,
+                    cfg.dataset.path_to_data,
                     optimizer,
                     criterion,
                     cfg.training.general.clip,
@@ -151,10 +152,10 @@ def train_model(rank=None):
                 val_loss = evaluate(
                     model,
                     val_dataloader,
+                    cfg.dataset.path_to_data,
                     criterion,
                     device,
-                    qtn_tokenizer,
-                    ans_vocab,
+                    load_tensors=cfg.dataset.load_image_tensors
                 )
 
                 if cfg.training.scheduler.isScheduler:
@@ -237,9 +238,8 @@ def train_model(rank=None):
         test_dataloader,
         criterion,
         device,
-        qtn_tokenizer,
-        ans_vocab,
-        is_test=True,
+        # is_test=True,
+        load_tensors=cfg.dataset.load_image_tensors
     )
 
     if (not cfg.general.ddp) or (cfg.general.ddp and rank == 0):

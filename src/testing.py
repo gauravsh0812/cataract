@@ -19,9 +19,9 @@ def evaluate(
     all_preds = []
     all_labels = []
 
-    if is_test:
-        labels_file = open("logs/predictions.txt","w")
-        labels_file.write("Images \t Prediction \n")
+    # if is_test:
+    #     labels_file = open("logs/predictions.txt","w")
+    #     labels_file.write("Images \t Prediction \n")
 
     with torch.no_grad():
         for i, (imgs, lbls) in enumerate(test_dataloader):
