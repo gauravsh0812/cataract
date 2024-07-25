@@ -1,7 +1,7 @@
 model_name: clip_adaptor
 
 general:
-  seed: 42
+  seed: 2
   ddp: False
   ncpus: 8
   gpus: 0
