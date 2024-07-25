@@ -42,7 +42,7 @@ def train(
             device,
         )    # (B, num_classes)
 
-        loss = criterion(output.contiguous().view(-1, output.shape[-1]), lbls)
+        loss = criterion(output.contiguous().view(-1, output.shape[-1]), lbls.contiguous())
         
         loss.backward()
 
