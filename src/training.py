@@ -23,7 +23,6 @@ def train(
     for i, (imgs, lbls) in enumerate(tset):
         
         lbls = torch.tensor(lbls).long().to(device)
-        print(lbls)
 
         if load_tensors:
             _imgs = []
