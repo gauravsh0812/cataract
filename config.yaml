@@ -27,17 +27,17 @@ training:
     batch_size: 16
     epochs: 50
     dropout: 0.1
-    learning_rate: 0.0001
+    learning_rate: 0.001
     weight_decay: 0.00001
     betas: [0.9,0.8]
     early_stopping: 5
     num_classes: 1
   
   scheduler:
-    isScheduler: False
+    isScheduler: True
     verbose: True
     scheduler_step_size: 5
-    scheduler_gamma: 0.9
+    scheduler_gamma: 0.5
   
   adaptor:
     features: [512,256,128,64]
