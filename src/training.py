@@ -40,7 +40,7 @@ def train(
             imgs,
             device,
         )
-        
+        print(output.shape)
         exit()
         loss = criterion(output.contiguous().view(-1, output.shape[-1]), 
                          ans.contiguous().view(-1))
