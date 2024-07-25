@@ -49,6 +49,7 @@ class Projector(nn.Module):
         x = self.gelu(self.norm(self.final_lin2(x)))  # (B, 50, 64)
         x = self.pool(x)    # (B, 1, 64)       
         x = torch.flatten(x, -2,-1)   # (B, 64)
+        print(x.shape)
         x = self.gelu(self.final_lin3(x))   # (B, num_classes)
 
         return x   # (B,num_classes)
