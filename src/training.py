@@ -5,6 +5,7 @@ from tqdm.auto import tqdm
 def train(
     model,
     train_dataloader,
+    data_path,
     optimizer,
     criterion,
     clip,
@@ -28,7 +29,7 @@ def train(
             _imgs = []
             for i in imgs:
                 name = os.path.basename(i).split(".")[0]
-                tnsr = torch.load(f"/data/gauravs/surgicalGPT/cholec80/image_tensors/{name}.pt")#.squeeze(0)
+                tnsr = torch.load(f"{data_path}/frame_tensors/{name}.pt")#.squeeze(0)
                 _imgs.append(tnsr)
             
             imgs = torch.stack(_imgs).to(device)
