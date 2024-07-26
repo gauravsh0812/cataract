@@ -13,24 +13,30 @@ root = cfg.dataset.path_to_data
 # Download necessary NLTK data
 nltk.download('punkt')
 
+def get_data_from_website():
+    for i in open(f"{root}/text_dataset/links").readlines():
+        cmd = f"wget -O {root}/text_dataset/htmls/link_{i}.html"
+        os.system(cmd)
 
 def extract_text_from_html(html_file):
 
-    # Open the HTML file
-    with open(html_file, "r", encoding="utf-8") as file:
-        soup = BeautifulSoup(file, "html.parser")
+        html_file = f"{root}/text_datasets/htmls/{html_file}"
+        
+        # Open the HTML file
+        with open(html_file, "r", encoding="utf-8") as file:
+            soup = BeautifulSoup(file, "html.parser")
 
-    # Extract the title
-    title = soup.find('h1', {'id': 'firstHeading'}).get_text()
+        # Extract the title
+        title = soup.find('h1', {'id': 'firstHeading'}).get_text()
 
-    # Extract text from the 'mw-parser-output' class
-    content = soup.find('div', {'class': 'mw-parser-output'})
-    paragraphs = content.find_all('p')
+        # Extract text from the 'mw-parser-output' class
+        content = soup.find('div', {'class': 'mw-parser-output'})
+        paragraphs = content.find_all('p')
 
-    # Save the extracted title and text to a new file
-    with open("tmp.txt", "w", encoding="utf-8") as output_file:
-        for paragraph in paragraphs:
-            output_file.write(paragraph.get_text() + "\n")
+        # Save the extracted title and text to a new file
+        with open("tmp.txt", "w", encoding="utf-8") as output_file:
+            for paragraph in paragraphs:
+                output_file.write(paragraph.get_text() + "\n")
 
 def cleaning_text(n, category):
     with open("tmp.txt", "r", encoding="utf-8") as file:
@@ -84,10 +90,14 @@ def generate_questions(text):
 
 
 if __name__ == "__main__":
-    extract_text_from_html("dataset/cataract_text_dataset/htmls/Manual_small_incision_cataract_surgery.html")
-    cleaning_text(n=300, category="incision")
-    os.system("rm tmp.txt")
+    get_data_from_website()
 
+    for html_file in os.listdir(f"{root}/text_datasets/htmls"):
+        extract_text_from_html()
+        cleaning_text(n=300, category="incision")
+        os.system("rm tmp.txt")
+
+    exit()
     text = open("sequence_1.txt","r")
     print(text)
     generate_questions(text)
