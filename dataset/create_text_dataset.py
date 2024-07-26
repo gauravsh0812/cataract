@@ -20,7 +20,7 @@ def get_data_from_website():
 
 def extract_text_from_html(html_file):
 
-        html_file = f"{root}/text_datasets/htmls/{html_file}"
+        html_file = f"{root}/text_dataset/htmls/{html_file}"
         
         # Open the HTML file
         with open(html_file, "r", encoding="utf-8") as file:
@@ -92,7 +92,7 @@ def generate_questions(text):
 if __name__ == "__main__":
     get_data_from_website()
 
-    for html_file in os.listdir(f"{root}/text_datasets/htmls"):
+    for html_file in os.listdir(f"{root}/text_dataset/htmls"):
         extract_text_from_html()
         cleaning_text(n=300, category="incision")
         os.system("rm tmp.txt")
