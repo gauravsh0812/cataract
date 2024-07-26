@@ -48,7 +48,7 @@ def extract_text_from_html(html_file):
             for paragraph in paragraphs:
                 output_file.write(paragraph.get_text() + "\n")
 
-def cleaning_text(n, category):
+def cleaning_text(n, category, count):
 
     os.makedirs(f"{root}/text_dataset/sequences/{category}", exist_ok=True)
 
@@ -88,8 +88,11 @@ def cleaning_text(n, category):
     # Print or save the sequences
     for i, seq in enumerate(text_sequences):
         # Optionally, save each sequence to a separate file
-        with open(f"{root}/text_dataset/sequences/{category}/sequence_{i}.txt", "w", encoding="utf-8") as file:
+        with open(f"{root}/text_dataset/sequences/{category}/sequence_{count+i}.txt", "w", encoding="utf-8") as file:
             file.write(seq)
+        count+=1
+    
+    return count
 
 def generate_questions(text):
     tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
@@ -107,7 +110,7 @@ if __name__ == "__main__":
 
     for html_file in os.listdir(f"{root}/text_dataset/htmls"):
         extract_text_from_html(html_file)
-        cleaning_text(n=300, category="incision")
+        count = cleaning_text(n=300, category="incision", count=count)
         os.system("rm tmp.txt")
 
     exit()
