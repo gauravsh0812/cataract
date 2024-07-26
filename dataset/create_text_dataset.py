@@ -108,6 +108,7 @@ def generate_questions(text):
 if __name__ == "__main__":
     get_data_from_website()
 
+    count = 0
     for html_file in os.listdir(f"{root}/text_dataset/htmls"):
         extract_text_from_html(html_file)
         count = cleaning_text(n=300, category="incision", count=count)
