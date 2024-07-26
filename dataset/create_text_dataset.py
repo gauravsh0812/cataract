@@ -14,7 +14,7 @@ root = cfg.dataset.path_to_data
 nltk.download('punkt')
 
 def get_data_from_website():
-    for url in open(f"{root}/text_dataset/links.lst").readlines():
+    for i,url in enumerate(open(f"{root}/text_dataset/links.lst").readlines()):
         cmd = f"wget -O {root}/text_dataset/htmls/link_{i}.html '{url}'"
         os.system(cmd)
 
