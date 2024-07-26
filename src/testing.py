@@ -55,17 +55,17 @@ def evaluate(
         all_preds.extend(preds.cpu().numpy())
         all_labels.extend(lbls.cpu().numpy())
 
-        precision_macro = precision_score(all_labels, all_preds, average='macro')
-        recall_macro = recall_score(all_labels, all_preds, average='macro')
-        f1_macro = f1_score(all_labels, all_preds, average='macro')
+        precision_macro = precision_score(all_labels, all_preds, average='macro',zero_division=0)
+        recall_macro = recall_score(all_labels, all_preds, average='macro',zero_division=0)
+        f1_macro = f1_score(all_labels, all_preds, average='macro',zero_division=0)
 
-        precision_micro = precision_score(all_labels, all_preds, average='micro')
-        recall_micro = recall_score(all_labels, all_preds, average='micro')
-        f1_micro = f1_score(all_labels, all_preds, average='micro')
+        precision_micro = precision_score(all_labels, all_preds, average='micro',zero_division=0)
+        recall_micro = recall_score(all_labels, all_preds, average='micro',zero_division=0)
+        f1_micro = f1_score(all_labels, all_preds, average='micro',zero_division=0)
 
-        precision_weighted = precision_score(all_labels, all_preds, average='weighted')
-        recall_weighted = recall_score(all_labels, all_preds, average='weighted')
-        f1_weighted = f1_score(all_labels, all_preds, average='weighted')
+        precision_weighted = precision_score(all_labels, all_preds, average='weighted',zero_division=0)
+        recall_weighted = recall_score(all_labels, all_preds, average='weighted',zero_division=0)
+        f1_weighted = f1_score(all_labels, all_preds, average='weighted',zero_division=0)
 
         accuracy = accuracy_score(all_labels, all_preds)
 

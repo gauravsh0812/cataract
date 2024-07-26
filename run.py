@@ -236,6 +236,7 @@ def train_model(rank=None):
     test_loss = evaluate(
         model,
         test_dataloader,
+        cfg.dataset.path_to_data,
         criterion,
         device,
         # is_test=True,

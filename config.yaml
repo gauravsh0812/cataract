@@ -8,8 +8,7 @@ general:
   world_size: 4
   rank: 0
   device: "cuda"
-  preprocess: False
-  load_trained_model_for_testing: False 
+  load_trained_model_for_testing: True 
 
 dataset:
   path_to_data: "/data/shared/cataract-1K/phase_recognition"
