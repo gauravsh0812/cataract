@@ -93,7 +93,7 @@ if __name__ == "__main__":
     get_data_from_website()
 
     for html_file in os.listdir(f"{root}/text_dataset/htmls"):
-        extract_text_from_html()
+        extract_text_from_html(html_file)
         cleaning_text(n=300, category="incision")
         os.system("rm tmp.txt")
 
