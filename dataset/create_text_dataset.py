@@ -20,14 +20,20 @@ def get_data_from_website():
 
 def extract_text_from_html(html_file):
 
-        html_file = f"{root}/text_dataset/htmls/{html_file}"
+        html_file_path = f"{root}/text_dataset/htmls/{html_file}"
         
         # Open the HTML file
-        with open(html_file, "r", encoding="utf-8") as file:
+        with open(html_file_path, "r", encoding="utf-8") as file:
             soup = BeautifulSoup(file, "html.parser")
 
-        # Extract the title
-        title = soup.find('h1', {'id': 'firstHeading'}).get_text()
+        # Attempt to find the title
+        title_element = soup.find('h1', {'id': 'firstHeading'})
+
+        if title_element:
+            title = title_element.get_text()
+        else:
+            print(f"No title found in {html_file}")
+            title = "No Title Found"
 
         # Extract text from the 'mw-parser-output' class
         content = soup.find('div', {'class': 'mw-parser-output'})
