@@ -37,7 +37,11 @@ def extract_text_from_html(html_file):
 
         # Extract text from the 'mw-parser-output' class
         content = soup.find('div', {'class': 'mw-parser-output'})
-        paragraphs = content.find_all('p')
+        if content:
+            paragraphs = content.find_all('p')
+        else:
+            print(f"Content not found in {html_file}")
+            paragraphs = []
 
         # Save the extracted title and text to a new file
         with open("tmp.txt", "w", encoding="utf-8") as output_file:
