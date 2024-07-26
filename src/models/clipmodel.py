@@ -60,7 +60,7 @@ class Projector(nn.Module):
         x = self.final_lin1(x) # (B, 50, 64)
         x = self.pool(x.permute(0,2,1)).permute(0,2,1)    # (B, 1, 64)       
         x = torch.flatten(x, -2,-1)   # (B, 64)
-        x = self.gelu(self.final_lin3(x))   # (B, num_classes)
+        x = self.gelu(self.final_lin2(x))   # (B, num_classes)
 
         return x   # (B,num_classes)
 
