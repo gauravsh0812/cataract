@@ -37,16 +37,27 @@ class Projector(nn.Module):
 
     def __init__(self, num_classes):
         super(Projector, self).__init__()
-        self.final_lin1 = nn.Linear(768, 512)
-        self.final_lin2 = nn.Linear(512, 64)
-        self.final_lin3 = nn.Linear(64, num_classes)
-        self.norm = nn.BatchNorm1d(50)
+        self.final_lin1 = nn.Sequential(
+            nn.Linear(768, 512),
+            nn.BatchNorm1d(50),
+            nn.GELU(),
+            nn.Linear(512, 256),
+            nn.BatchNorm1d(50),
+            nn.GELU(),
+            nn.Linear(256,128),
+            nn.BatchNorm1d(50),
+            nn.GELU(),
+            nn.Linear(128,64),
+            nn.BatchNorm1d(50),
+            nn.GELU()
+        )
+        
+        self.final_lin2 = nn.Linear(64, num_classes)
         self.pool = nn.AdaptiveAvgPool1d(1)
         self.gelu = nn.GELU()
 
     def forward(self, x):
-        x = self.gelu(self.norm(self.final_lin1(x)))  
-        x = self.gelu(self.norm(self.final_lin2(x)))  # (B, 50, 64)
+        x = self.gelu(self.norm(self.final_lin1(x))) # (B, 50, 64)
         x = self.pool(x.permute(0,2,1)).permute(0,2,1)    # (B, 1, 64)       
         x = torch.flatten(x, -2,-1)   # (B, 64)
         x = self.gelu(self.final_lin3(x))   # (B, num_classes)
