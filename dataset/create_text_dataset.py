@@ -39,6 +39,9 @@ def extract_text_from_html(html_file):
                 output_file.write(paragraph.get_text() + "\n")
 
 def cleaning_text(n, category):
+
+    os.makedirs(f"{root}/text_dataset/sequences/{category}", exist_ok=True)
+
     with open("tmp.txt", "r", encoding="utf-8") as file:
         text = file.readlines()
 
