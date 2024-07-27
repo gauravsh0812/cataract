@@ -13,8 +13,8 @@ root = cfg.dataset.path_to_data
 # Download necessary NLTK data
 nltk.download('punkt')
 
-def get_data_from_website():
-    for i,url in enumerate(open(f"{root}/text_dataset/links.lst").readlines()):
+def get_data_from_website(category):
+    for i,url in enumerate(open(f"{root}/text_dataset/links/{category}_links.lst").readlines()):
         cmd = f"wget -O {root}/text_dataset/htmls/link_{i}.html '{url}'"
         os.system(cmd)
 
@@ -106,12 +106,13 @@ def generate_questions(text):
 
 
 if __name__ == "__main__":
-    get_data_from_website()
+    category = "incision"
+    get_data_from_website(category)
 
     count = 0
     for html_file in os.listdir(f"{root}/text_dataset/htmls"):
         extract_text_from_html(html_file)
-        count = cleaning_text(n=300, category="incision", count=count)
+        count = cleaning_text(n=300, category=category, count=count)
         os.system("rm tmp.txt")
 
     exit()
