@@ -14,8 +14,9 @@ root = cfg.dataset.path_to_data
 nltk.download('punkt')
 
 def get_data_from_website(category):
-    for i,url in enumerate(open(f"{root}/text_dataset/links/{category}_links.lst").readlines()):
-        cmd = f"wget -O {root}/text_dataset/htmls/link_{i}.html '{url}'"
+    links = open(f"{root}/text_dataset/links/{category}_links.lst").readlines()
+    for i in range(len(links)):
+        cmd = f"wget -O {root}/text_dataset/htmls/link_{i}.html '{links[i]}'"
         os.system(cmd)
 
 def extract_text_from_html(html_file):
@@ -93,32 +94,6 @@ def cleaning_text(n, category, count):
         count+=1
     
     return count
-
-def generate_questions(text):
-    from transformers import GPT2LMHeadModel, GPT2Tokenizer
-
-def generate_question(text_sequence):
-    # Load pre-trained model and tokenizer
-    model_name = 'gpt2'  # You can use 'gpt2-medium', 'gpt2-large', or 'gpt2-xl' for larger models
-    model = GPT2LMHeadModel.from_pretrained(model_name)
-    tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-
-    # Define the prompt to generate the question
-    prompt = f"Given the following text sequence:\n\n{text_sequence}\n\nGenerate a question that can be associated with this sequence:\n\nQ:"
-
-    # Encode the input and generate output
-    inputs = tokenizer.encode(prompt, return_tensors='pt')
-    outputs = model.generate(inputs, max_length=300, num_return_sequences=1)
-
-    # Decode the generated question
-    question = tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-    # Extract and return the generated question
-    question_start = question.find("Q:") + 2
-    generated_question = question[question_start:].strip()
-    return generated_question
-
-
 
 if __name__ == "__main__":
     category = "incision"
