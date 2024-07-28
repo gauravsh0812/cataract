@@ -16,7 +16,7 @@ nltk.download('punkt')
 def get_data_from_website(category):
     links = open(f"{root}/text_dataset/links/{category}_links.lst").readlines()
     for i in range(len(links)):
-        cmd = f"wget -O {root}/text_dataset/htmls/link_{i}.html '{links[i]}'"
+        cmd = f"wget -O {root}/text_dataset/htmls/link_{i}.html {links[i]}"
         os.system(cmd)
 
 def extract_text_from_html(html_file):
