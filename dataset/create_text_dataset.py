@@ -110,5 +110,5 @@ if __name__ == "__main__":
         text = open(f"{root}/text_dataset/sequences/{category}/{_f}","r")
         print(text)
         # Generate and print the question
-        generated_question = generate_question(text)
-        print(f"Generated Question: {generated_question}")
+        # generated_question = generate_question(text)
+        # print(f"Generated Question: {generated_question}")
