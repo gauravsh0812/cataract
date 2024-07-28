@@ -95,14 +95,29 @@ def cleaning_text(n, category, count):
     return count
 
 def generate_questions(text):
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
-    model = GPT2LMHeadModel.from_pretrained("gpt2-medium")
-    input_text = "Your text sequence goes here."
-    input_ids = tokenizer.encode(input_text, return_tensors='pt')
-    output = model.generate(input_ids, max_length=150, num_return_sequences=5, temperature=0.7)   
-    for i in range(5):  # Assuming we asked for 5 sequences
-        question = tokenizer.decode(output[i], skip_special_tokens=True)
-        print(question) 
+    from transformers import GPT2LMHeadModel, GPT2Tokenizer
+
+def generate_question(text_sequence):
+    # Load pre-trained model and tokenizer
+    model_name = 'gpt2'  # You can use 'gpt2-medium', 'gpt2-large', or 'gpt2-xl' for larger models
+    model = GPT2LMHeadModel.from_pretrained(model_name)
+    tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+
+    # Define the prompt to generate the question
+    prompt = f"Given the following text sequence:\n\n{text_sequence}\n\nGenerate a question that can be associated with this sequence:\n\nQ:"
+
+    # Encode the input and generate output
+    inputs = tokenizer.encode(prompt, return_tensors='pt')
+    outputs = model.generate(inputs, max_length=300, num_return_sequences=1)
+
+    # Decode the generated question
+    question = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+    # Extract and return the generated question
+    question_start = question.find("Q:") + 2
+    generated_question = question[question_start:].strip()
+    return generated_question
+
 
 
 if __name__ == "__main__":
@@ -112,10 +127,13 @@ if __name__ == "__main__":
     count = 0
     for html_file in os.listdir(f"{root}/text_dataset/htmls"):
         extract_text_from_html(html_file)
-        count = cleaning_text(n=300, category=category, count=count)
+        count = cleaning_text(n=100, category=category, count=count)
         os.system("rm tmp.txt")
 
-    exit()
-    text = open("sequence_1.txt","r")
-    print(text)
-    generate_questions(text)
+
+    for _f in os.listdir(f"{root}/text_dataset/sequences/{category}"):
+        text = open(f"{root}/text_dataset/sequences/{category}/{_f}","r")
+        print(text)
+        # Generate and print the question
+        generated_question = generate_question(text)
+        print(f"Generated Question: {generated_question}")
