@@ -3,7 +3,7 @@ import torch.nn as nn
 from PIL import Image
 import yaml
 from box import Box
-
+from torchvision import models, transforms
 from transformers import (
     CLIPImageProcessor, 
     CLIPVisionModel,
