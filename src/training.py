@@ -29,7 +29,7 @@ def train(
             _imgs = []
             for i in imgs:
                 name = os.path.basename(i).split(".")[0]
-                tnsr = torch.load(f"{data_path}/resnet_frame_tensors/{name}.pt")#.squeeze(0)
+                tnsr = torch.load(i)
                 _imgs.append(tnsr)
             
             imgs = torch.stack(_imgs).to(device)
