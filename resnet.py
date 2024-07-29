@@ -51,7 +51,7 @@ for case in tqdm.tqdm(os.listdir(image_dir)):
         # Save tensor with the same name as the image but with .pt extension
         tensor_path = os.path.join(f"{tensor_dir}/{case}", f'{os.path.splitext(image_name)[0]}.pt')
         
-        features = model(tensor)
+        features = model(tensor.unsqueeze(0))
         torch.save(features, tensor_path)
 
 print("Preprocessing and saving tensors completed.")
