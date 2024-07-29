@@ -28,7 +28,6 @@ def train(
         if load_tensors:
             _imgs = []
             for i in imgs:
-                name = os.path.basename(i).split(".")[0]
                 tnsr = torch.load(i)
                 _imgs.append(tnsr)
             
