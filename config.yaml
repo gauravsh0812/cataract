@@ -13,7 +13,7 @@ general:
 dataset:
   path_to_data: "/data/shared/cataract-1K/phase_recognition"
   shuffle: True
-  load_image_tensors: False
+  load_image_tensors: True
   vocab_freq: 5
   sample_size: -1
   num_workers: 0
