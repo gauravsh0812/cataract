@@ -5,8 +5,6 @@ import cv2
 import numpy as np
 import tqdm
 
-root = "/data/shared/cataract-1K/segmentation/Annotations/Images-and-Supervisely-Annotations"
-
 imgs = []
 lbls = []
 coords = []
@@ -52,6 +50,7 @@ def get_masks(coordinates, ipath, mpath):
     cv2.imwrite(mask_path, mask)
 
 if __name__ == "__main__":
+    root = "/data/shared/cataract-1K/segmentation/Annotations/Images-and-Supervisely-Annotations"
     os.makedirs("/data/shared/cataract-1K/segmentation/final_data_for_segmentation", 
             exist_ok=True)
     
@@ -64,9 +63,10 @@ if __name__ == "__main__":
             img_path = os.path.join(root, f"{folder}/img")
 
             for i in os.listdir(img_path):
-                ann_file_path = os.path.join(ann_path, f"{i}.json")
-                img_file_path = os.path.join(img_path, i)
-                get_details(ann_file_path, img_file_path, mask_path)
+                if ".png" in i:
+                    ann_file_path = os.path.join(ann_path, f"{i}.json")
+                    img_file_path = os.path.join(img_path, i)
+                    get_details(ann_file_path, img_file_path, mask_path)
 
     df = pd.DataFrame({
         'Image_Paths': imgs,
