@@ -6,6 +6,7 @@ import numpy as np
 import tqdm
 
 imgs = []
+masks = []
 lbls = []
 coords = []
 qtns = []
@@ -47,6 +48,7 @@ def get_masks(coordinates, ipath, mpath):
     # Save the mask
     name = os.path.basename(ipath)
     mask_path = f"{mpath}/{name}"
+    masks.append(mask_path)
     cv2.imwrite(mask_path, mask)
 
 if __name__ == "__main__":
@@ -70,6 +72,7 @@ if __name__ == "__main__":
 
     df = pd.DataFrame({
         'Image_Paths': imgs,
+        'Mask_Paths': masks,
         'Labels': lbls,
         'Coordinates': coords,
         'Questions': qtns,
