@@ -19,7 +19,7 @@ def get_details(_path, iPath, mask_path):
         points = f["objects"][o]["points"]
         exterior_coord = points["exterior"] 
 
-        get_masks(exterior_coord)
+        get_masks(exterior_coord, iPath, mask_path)
 
         imgs.append(iPath)
         lbls.append(lbl)
