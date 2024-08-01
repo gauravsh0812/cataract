@@ -16,19 +16,17 @@ class ClipVisionEncoder(nn.Module):
     
     def __init__(self,):
         super(ClipVisionEncoder, self).__init__()
-        # self.processor = CLIPImageProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        self.processor = CLIPImageProcessor.from_pretrained("openai/clip-vit-base-patch32")
         self.model = CLIPVisionModel.from_pretrained("openai/clip-vit-base-patch32")
 
     def forward(self, image_paths, device):
 
         _hid = list()
         for image_path in image_paths:
-            # image = image_path
-            # image = Image.open(image_path)
-            # inputs = self.processor(images=image, return_tensors="pt").to(device)
-            # outputs = self.model(**inputs)
-            image_path = image_path.to(device)
-            outputs = self.model(image_path)
+            image = image_path
+            image = Image.open(image_path)
+            inputs = self.processor(images=image, return_tensors="pt").to(device)
+            outputs = self.model(**inputs)
             last_hidden_state = outputs.last_hidden_state
         
             _hid.append(last_hidden_state.squeeze(0))

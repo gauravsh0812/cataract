@@ -12,7 +12,7 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP
 from dataset.preprocessing import preprocess
-from src.models.clipmodel import Cataract_Model
+from src.models.phase_model import Cataract_Model
 from src.utils import *
 from src.training import train
 from src.testing import evaluate
