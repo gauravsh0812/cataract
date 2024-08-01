@@ -3,6 +3,7 @@ import json
 import pandas as pd
 import cv2
 import numpy as np
+import tqdm
 
 root = "/data/shared/cataract-1K/segmentation/Annotations/Images-and-Supervisely-Annotations"
 
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     mask_path = "/data/shared/cataract-1K/segmentation/final_data_for_segmentation/masks"
     os.makedirs(mask_path, exist_ok=True)
     
-    for folder in os.listdir(root):
+    for folder in tqdm.tqdm(os.listdir(root)):
         if "case_" in folder:
             ann_path = os.path.join(root, f"{folder}/ann")
             img_path = os.path.join(root, f"{folder}/img")
