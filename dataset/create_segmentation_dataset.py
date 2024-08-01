@@ -33,8 +33,7 @@ def get_details(_path, iPath, mask_path):
 def get_masks(coordinates, ipath, mpath):
 
     # Load the corresponding image
-    image_path = img_path
-    image = cv2.imread(image_path)
+    image = cv2.imread(ipath)
     height, width = image.shape[:2]
 
     # Create an empty binary mask
