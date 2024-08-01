@@ -24,7 +24,7 @@ def get_details(_path, iPath, mask_path):
 
         imgs.append(iPath)
         lbls.append(lbl)
-        coords.append(exterior_coord, iPath, mask_path)
+        coords.append(exterior_coord)
 
         if lbl in ["Lens", "Pupil", "Cornea", "cornea1", "pupil1"]: 
             qtns.append(f"Segment the target area {lbl} in the image.")
