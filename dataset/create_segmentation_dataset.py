@@ -19,7 +19,7 @@ def get_details(_path, iPath, mask_path):
         points = f["objects"][o]["points"]
         exterior_coord = points["exterior"] 
 
-        get_masks(exterior_coord, iPath, mask_path)
+        get_masks(exterior_coord, iPath, mask_path, lbl)
 
         imgs.append(iPath)
         lbls.append(lbl)
@@ -30,7 +30,7 @@ def get_details(_path, iPath, mask_path):
         else:
             qtns.append(f"Segment the surgical instrument {lbl} in the image.")
 
-def get_masks(coordinates, ipath, mpath):
+def get_masks(coordinates, ipath, mpath, lbl):
 
     # Load the corresponding image
     image = cv2.imread(ipath)
@@ -47,7 +47,7 @@ def get_masks(coordinates, ipath, mpath):
 
     # Save the mask
     name = os.path.basename(ipath)
-    mask_path = f"{mpath}/{name}"
+    mask_path = f"{mpath}/{lbl}_{name}"
     masks.append(mask_path)
     cv2.imwrite(mask_path, mask)
 
@@ -78,4 +78,4 @@ if __name__ == "__main__":
         'Questions': qtns,
     })
 
-    df.to_csv("/data/shared/cataract-1K/segmentation/final_dataset.csv")
+    df.to_csv("/data/shared/cataract-1K/segmentation/final_data_for_segmentation/final_dataset.csv")
