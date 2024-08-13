@@ -1,4 +1,7 @@
-model_name: clip_adaptor
+model_name: clip_sam_llm_seg
+
+comment: "choose from phase_recognition and segmentation"
+task: "segmentation"
 
 general:
   seed: 2

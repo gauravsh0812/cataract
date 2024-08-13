@@ -13,6 +13,9 @@ import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP
 from dataset.preprocessing import preprocess
 from src.models.phase_model import Cataract_Model
+from src.models.segmentation import Segmentation
+from src.models.unetpp import NestedUNet
+from src.models.sam_extend import SAM_Extend
 from src.utils import *
 from src.training import train
 from src.testing import evaluate
@@ -42,6 +45,16 @@ def epoch_time(start_time, end_time):
     elapsed_secs = int(elapsed_time - (elapsed_mins * 60))
     return elapsed_mins, elapsed_secs
 
+def define_model(num_classes,):
+    if cfg.task == "phase_recognition":
+        return Cataract_Model(num_classes)
+    elif cfg.task == "segmentation":
+        return Segmentation(
+            NestedUNet,
+            SAM_Extend,
+        )
+
+
 def train_model(rank=None):
 
     # set_random_seed
@@ -68,7 +81,7 @@ def train_model(rank=None):
                 val_dataloader,
                 num_classes
             ) = preprocess(cfg.training.general.batch_size)
-            model = Cataract_Model(num_classes).to(device)
+            model = define_model(num_classes).to(device)
 
         elif cfg.general.ddp:
             # create default process group
@@ -80,7 +93,7 @@ def train_model(rank=None):
                 val_dataloader,
                 num_classes
             ) = preprocess(cfg.training.general.batch_size)
-            model = Cataract_Model(num_classes)
+            model = define_model(num_classes)
             model = DDP(
                 model.to(f"cuda:{rank}"),
                 device_ids=[rank],
@@ -99,7 +112,7 @@ def train_model(rank=None):
             val_dataloader,
             num_classes
         ) = preprocess(cfg.training.general.batch_size)
-        model = Cataract_Model(num_classes).to(device)
+        model = define_model(num_classes).to(device)
 
     print("MODEL: ")
     print(f"The model has {count_parameters(model)} trainable parameters")
