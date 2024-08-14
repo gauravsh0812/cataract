@@ -10,7 +10,7 @@ import torch.multiprocessing as mp
 mp.set_start_method('spawn', force=True)
 
 # reading config file
-with open("config.yaml") as f:
+with open("config/segmentation_config.yaml") as f:
     cfg = Box(yaml.safe_load(f))
 
 class Img2MML_dataset(Dataset):
@@ -25,16 +25,14 @@ class Img2MML_dataset(Dataset):
         lbl = self.dataframe.iloc[index,-1]
         return img,lbl
 
-def preprocess(batch_size):
+def segmentation_preprocess(batch_size):
 
     print("creating dataloaders...")
     
-    # two columns: [images, phases]
-    if not cfg.dataset.load_image_tensors:
-        df = pd.read_csv(f"{cfg.dataset.path_to_data}/extracted_frames_with_phases.csv")
-    else:
-        df = pd.read_csv(f"{cfg.dataset.path_to_data}/extracted_frames_tensors_with_phases.csv")
+    # two columns: [images, masks]
+    df = pd.read_csv(f"{cfg.dataset.path_to_data}/final_dataset.csv")
 
+    # shuffling the dataset
     for _ in range(5):
         df = df.sample(frac=1).reset_index(drop=True)
 

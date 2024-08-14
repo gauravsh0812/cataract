@@ -1,0 +1,65 @@
+model_name: clip_adaptor
+
+task: "phase_recognition"
+
+general:
+  seed: 2
+  ddp: False
+  ncpus: 8
+  gpus: 0
+  world_size: 4
+  rank: 0
+  device: "cuda"
+  load_trained_model_for_testing: False 
+
+dataset:
+  path_to_data: "/data/shared/cataract-1K/phase_recognition"
+  shuffle: True
+  load_image_tensors: False
+  vocab_freq: 5
+  sample_size: -1
+  num_workers: 0
+  pin_memory: False
+  num_classes: 13
+  
+training:
+  general:
+    clip: 1 
+    batch_size: 16
+    epochs: 1
+    dropout: 0.1
+    learning_rate: 0.0001
+    weight_decay: 0.00001
+    betas: [0.9,0.8]
+    early_stopping: 5
+    num_classes: 1
+  
+  scheduler:
+    isScheduler: False
+    verbose: True
+    scheduler_step_size: 5
+    scheduler_gamma: 0.5
+  
+  adaptor:
+    features: [512,256,128,64]
+
+  roberta:
+    in_dim: 768
+    finetune: False
+
+  clip:
+    finetune: False
+    configuration: 
+      hidden_size: 128
+      intermediate_size: 1408
+      projection_dim: 192
+      num_hidden_layers: 3
+      num_attention_heads: 4
+      num_channels: 3
+      image_size: 224
+      patch_size: 32
+  
+  bilstm:
+    in_dim: 64
+    hidden_dim: 64
+    embed_dim: 64

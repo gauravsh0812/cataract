@@ -24,7 +24,7 @@ class VGGBlock(nn.Module):
         return out
 
 class NestedUNet(nn.Module):
-    def __init__(self, num_classes, input_channels=3, deep_supervision=False, **kwargs):
+    def __init__(self, num_classes=1, input_channels=3, deep_supervision=False, **kwargs):
         super().__init__()
 
         nb_filter = [32, 64, 128, 256, 512]

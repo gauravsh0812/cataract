@@ -1,7 +1,6 @@
-model_name: clip_sam_llm_seg
+model_name: clip_adaptor
 
-comment: "choose from phase_recognition and segmentation"
-task: "segmentation"
+task: "phase_recognition"
 
 general:
   seed: 2
@@ -14,7 +13,7 @@ general:
   load_trained_model_for_testing: False 
 
 dataset:
-  path_to_data: "/data/shared/cataract-1K/phase_recognition"
+  path_to_data: "/data/shared/cataract-1K/segmentation/final_data_for_segmentation"
   shuffle: True
   load_image_tensors: False
   vocab_freq: 5

@@ -7,7 +7,7 @@ from box import Box
 import tqdm
 
 # reading config file
-with open("config.yaml") as f:
+with open("config/phase_recognition_config.yaml") as f:
     cfg = Box(yaml.safe_load(f))
 
 # Define a transformation to preprocess the images
