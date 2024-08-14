@@ -19,16 +19,19 @@ def get_details(_path, iPath, mask_path):
         points = f["objects"][o]["points"]
         exterior_coord = points["exterior"] 
 
-        get_masks(exterior_coord, iPath, mask_path, lbl)
+        if lbl not in lbls:
+            lbls.append(lbl)
 
-        imgs.append(iPath)
-        lbls.append(lbl)
-        coords.append(exterior_coord)
+        # get_masks(exterior_coord, iPath, mask_path, lbl)
 
-        if lbl in ["Lens", "Pupil", "Cornea", "cornea1", "pupil1"]: 
-            qtns.append(f"Segment the target area {lbl} in the image.")
-        else:
-            qtns.append(f"Segment the surgical instrument {lbl} in the image.")
+        # imgs.append(iPath)
+        # lbls.append(lbl)
+        # coords.append(exterior_coord)
+
+        # if lbl in ["Lens", "Pupil", "Cornea", "cornea1", "pupil1"]: 
+        #     qtns.append(f"Segment the target area {lbl} in the image.")
+        # else:
+        #     qtns.append(f"Segment the surgical instrument {lbl} in the image.")
 
 def get_masks(coordinates, ipath, mpath, lbl):
 
@@ -70,12 +73,14 @@ if __name__ == "__main__":
                     img_file_path = os.path.join(img_path, i)
                     get_details(ann_file_path, img_file_path, mask_path)
 
-    df = pd.DataFrame({
-        'Image_Paths': imgs,
-        'Mask_Paths': masks,
-        'Labels': lbls,
-        'Coordinates': coords,
-        'Questions': qtns,
-    })
+    print(lbls)
+    
+    # df = pd.DataFrame({
+    #     'Image_Paths': imgs,
+    #     'Mask_Paths': masks,
+    #     'Labels': lbls,
+    #     'Coordinates': coords,
+    #     'Questions': qtns,
+    # })
 
-    df.to_csv("/data/shared/cataract-1K/segmentation/final_data_for_segmentation/final_dataset.csv")
+    # df.to_csv("/data/shared/cataract-1K/segmentation/final_data_for_segmentation/final_dataset.csv")
