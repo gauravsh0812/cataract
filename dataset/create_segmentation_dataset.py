@@ -11,27 +11,44 @@ lbls = []
 coords = []
 qtns = []
 
+def rename_lbl(l):
+    
+    dict_lbls = {'Spatula':"spatula", 
+                'Phacoemulsification Tip':"phacoemulsification_tip", 
+                'Pupil':"pupil", 
+                'Cornea':"cornea", 
+                'Gauge':"gauge", 
+                'Lens':"lens", 
+                'cornea1':"cornea", 
+                'Capsulorhexis Cystotome':"capsulorhexis_cystotome", 
+                'Irrigation-Aspiration':"irrigation_aspiration", 
+                'pupil1':"pupil", 
+                'Slit Knife':"slit_knife", 
+                'Lens Injector':"lens_injector", 
+                'Incision Knife':"incision_knife", 
+                'Katena Forceps':"katena_forceps", 
+                'Capsulorhexis Forceps':"capsulorhexis_forceps"}
+
+    return dict_lbls[l]
+
 def get_details(_path, iPath, mask_path):
     f = json.load(open(_path,"r"))
     obj = f["objects"]
     for o in range(len(obj)):
-        lbl = f["objects"][o]["classTitle"]
+        lbl = rename_lbl(f["objects"][o]["classTitle"])
         points = f["objects"][o]["points"]
         exterior_coord = points["exterior"] 
 
-        if lbl not in lbls:
-            lbls.append(lbl)
+        get_masks(exterior_coord, iPath, mask_path, lbl)
 
-        # get_masks(exterior_coord, iPath, mask_path, lbl)
+        imgs.append(iPath)
+        lbls.append(lbl)
+        coords.append(exterior_coord)
 
-        # imgs.append(iPath)
-        # lbls.append(lbl)
-        # coords.append(exterior_coord)
-
-        # if lbl in ["Lens", "Pupil", "Cornea", "cornea1", "pupil1"]: 
-        #     qtns.append(f"Segment the target area {lbl} in the image.")
-        # else:
-        #     qtns.append(f"Segment the surgical instrument {lbl} in the image.")
+        if lbl in ["lens", "pupil", "cornea"]: 
+            qtns.append(f"Segment the target area {lbl} in the image.")
+        else:
+            qtns.append(f"Segment the surgical instrument {lbl} in the image.")
 
 def get_masks(coordinates, ipath, mpath, lbl):
 
@@ -73,8 +90,6 @@ if __name__ == "__main__":
                     img_file_path = os.path.join(img_path, i)
                     get_details(ann_file_path, img_file_path, mask_path)
 
-    print(lbls)
-    
     # df = pd.DataFrame({
     #     'Image_Paths': imgs,
     #     'Mask_Paths': masks,
