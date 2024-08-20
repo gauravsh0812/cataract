@@ -301,18 +301,12 @@ class Cataract_Model(nn.Module):
                         nn.init.constant_(param.data, 0)
 
     def forward(self, x):
-        
-        print("initial: ", x.shape)
         x, enc1, enc2, enc3,_shape = self.cnn(x)   # (B, L, 512)   
         B,D,W,H = _shape
         x = self.xfmer(x).permute(1,0,2)  # (B, L, 512)
         x = x.permute(0,2,1)  # (B, 512, L)
-        x = x.view(B,D,W,H) # (B, 512, W, H)     
-        print("x going to unet: ", x.shape)   
-        print(enc1.shape, enc2.shape, enc3.shape)
+        x = x.view(B,D,W,H) # (B, 512, W, H)             
         x = self.up(x, enc1, enc2, enc3)
-
-        print(x.shape)
 
 cm = Cataract_Model()
 x = torch.rand((5, 3, 244, 244))
