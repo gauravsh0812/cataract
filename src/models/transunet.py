@@ -199,9 +199,6 @@ class Transformer_Encoder(nn.Module):
 
         return xfmer_enc_output
 
-import torch
-import torch.nn as nn
-
 class UNetDecoder(nn.Module):
     def __init__(self):
         super(UNetDecoder, self).__init__()
