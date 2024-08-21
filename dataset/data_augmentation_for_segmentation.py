@@ -32,7 +32,7 @@ def augment_and_save(image, mask, save_dir_images, save_dir_masks, base_name, in
 
 def augment_dataset(csv_file, save_dir_images, save_dir_masks, output_csv_file, num_augmentations=3):
     # Read the CSV file
-    df = pd.read_csv(csv_file)
+    df = pd.read_csv(csv_file)[:100]
     
     # Create directories if they don't exist
     os.makedirs(save_dir_images, exist_ok=True)
