@@ -3,12 +3,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import random
 
-random.seed(20)
-torch.manual_seed(20)
-if torch.cuda.is_available():
-    torch.cuda.manual_seed_all(20)
+# random.seed(20)
+# torch.manual_seed(20)
+# if torch.cuda.is_available():
+#     torch.cuda.manual_seed_all(20)
 
-device = "cpu"
+# device = "cpu"
 
 class CNN_Encoder(nn.Module):
     def __init__(self):
@@ -260,9 +260,9 @@ class ReCal(nn.Module):
     # Chethana
     pass
 
-class Cataract_Model(nn.Module):
-    def __init__(self, ):
-        super(Cataract_Model, self).__init__()  
+class Segmentation_Model(nn.Module):
+    def __init__(self,device):
+        super(Segmentation_Model, self).__init__()  
         self.cnn = CNN_Encoder()
         self.xfmer = Transformer_Encoder(dec_hid_dim=512, 
                                          nheads=4,
@@ -305,6 +305,6 @@ class Cataract_Model(nn.Module):
         x = x.view(B,D,W,H) # (B, 512, W, H)             
         x = self.up(x, enc1, enc2, enc3)
 
-cm = Cataract_Model()
-x = torch.rand((5, 3, 244, 244))
-cm(x)
+# cm = Cataract_Model()
+# x = torch.rand((5, 3, 244, 244))
+# cm(x)

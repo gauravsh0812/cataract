@@ -12,7 +12,6 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 from torch.nn.parallel import DistributedDataParallel as DDP
 from dataset.segmentation_preprocessing import segmentation_preprocess as preprocess
-from src.models.phase_model import Cataract_Model
 from src.models.segmentation import Segmentation_Model
 from src.models.unetpp import NestedUNet
 from src.models.sam_extend import LLMSupervisedSAM_Extend
@@ -46,8 +45,8 @@ def epoch_time(start_time, end_time):
     elapsed_secs = int(elapsed_time - (elapsed_mins * 60))
     return elapsed_mins, elapsed_secs
 
-def define_model():
-    return Cataract_Model(cfg.dataset.num_classes)
+def define_model(device):
+    return Segmentation_Model(device)
     
 def train_model(rank=None):
 
